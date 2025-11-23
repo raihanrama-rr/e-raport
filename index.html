@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="id">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Raport PAUD Kasih Ibu</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .popup-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        
+        .popup-content {
+            animation: popupSlide 0.3s ease-out;
+        }
+        
+        @keyframes popupSlide {
+            from { 
+                opacity: 0; 
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            to { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        .btn-hover {
+            transition: all 0.2s ease;
+        }
+        
+        .btn-hover:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .table-row:hover {
+            background-color: #f8fafc;
+            transition: background-color 0.2s ease;
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="bg-gray-50 min-h-full">
+  <div class="min-h-full flex flex-col"><!-- Header -->
+   <header class="bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg">
+    <div class="container mx-auto px-6 py-6">
+     <div class="flex flex-col md:flex-row items-center justify-between"><!-- Logo and Title -->
+      <div class="flex items-center mb-3 md:mb-0"><img src="https://iili.io/fJHqQnt.png" alt="Logo PAUD Kasih Ibu" class="h-12 w-12 rounded-full bg-white p-2 mr-3 shadow-md" onerror="this.style.display='none';">
+       <div>
+        <h1 id="site-title" class="text-2xl font-bold">E-Raport PAUD Kasih Ibu</h1>
+        <p class="text-blue-100 text-sm">Sistem Informasi Raport Digital</p>
+       </div>
+      </div><!-- Welcome Message -->
+      <div class="text-center md:text-right">
+       <p id="welcome-message" class="text-sm font-medium text-blue-50">🎓 Selamat Datang di Portal E-Raport</p>
+       <p class="text-xs text-blue-100 mt-1"><span id="credit-text">Dibuat oleh Admin PAUD Kasih Ibu</span></p>
+      </div>
+     </div>
+    </div>
+   </header><!-- Top Navigation -->
+   <div class="bg-white shadow-sm">
+    <div class="container mx-auto px-6 py-4">
+     <div class="flex justify-end"><a href="https://tally.so/r/LZZKMy" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg btn-hover font-medium"> Input E-Raport </a>
+     </div>
+    </div>
+   </div><!-- Main Content -->
+   <main class="flex-1 container mx-auto px-6 py-8"><!-- Petunjuk Penggunaan -->
+    <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-6 mb-8 shadow-sm">
+     <div class="flex items-start">
+      <div class="flex-shrink-0">
+       <svg class="h-6 w-6 text-blue-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+       </svg>
+      </div>
+      <div class="ml-4 flex-1">
+       <h3 class="text-lg font-semibold text-blue-900 mb-2">📋 Petunjuk Penggunaan</h3>
+       <p class="text-blue-800 text-sm leading-relaxed mb-2">Selamat datang di Portal E-Raport PAUD Kasih Ibu! Website ini memudahkan Anda untuk mengelola dan mengakses raport digital siswa.</p>
+       <div class="flex items-start text-blue-800 text-sm"><span class="mr-2">✏️</span>
+        <p>Untuk <strong>membuat raport baru</strong>, klik tombol <strong>"Input E-Raport"</strong> di pojok kanan atas halaman ini.</p>
+       </div>
+       <div class="flex items-start text-blue-800 text-sm mt-2"><span class="mr-2">📥</span>
+        <p>Untuk <strong>mengunduh raport</strong>, cari nama siswa di tabel di bawah, lalu klik tombol <strong>"Unduh"</strong>.</p>
+       </div>
+      </div>
+     </div>
+    </div><!-- Statistics Dashboard -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"><!-- Jumlah Input Raport -->
+     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
+      <div class="flex items-center justify-between">
+       <div>
+        <p class="text-sm text-gray-600 mb-1">Jumlah Input Raport</p>
+        <h3 id="stat-raport" class="text-3xl font-bold text-gray-900">0</h3>
+       </div>
+       <div class="bg-blue-100 rounded-full p-3">
+        <svg class="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+       </div>
+      </div>
+     </div><!-- Jumlah Rombel -->
+     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
+      <div class="flex items-center justify-between">
+       <div>
+        <p class="text-sm text-gray-600 mb-1">Jumlah Rombel</p>
+        <h3 class="text-3xl font-bold text-gray-900">2</h3>
+       </div>
+       <div class="bg-green-100 rounded-full p-3">
+        <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+        </svg>
+       </div>
+      </div>
+     </div><!-- Jumlah Guru -->
+     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-purple-500">
+      <div class="flex items-center justify-between">
+       <div>
+        <p class="text-sm text-gray-600 mb-1">Jumlah Guru</p>
+        <h3 class="text-3xl font-bold text-gray-900">2</h3>
+       </div>
+       <div class="bg-purple-100 rounded-full p-3">
+        <svg class="h-8 w-8 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        </svg>
+       </div>
+      </div>
+     </div>
+    </div><!-- Controls -->
+    <div class="bg-white rounded-xl shadow-sm p-6 mb-6"><!-- Realtime Status Bar -->
+     <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
+      <div class="flex items-center space-x-3">
+       <div class="flex items-center">
+        <div class="h-2 w-2 bg-green-500 rounded-full animate-pulse mr-2"></div><span class="text-sm text-gray-600 font-medium">Mode Realtime Aktif</span>
+       </div><span class="text-xs text-gray-500" id="last-refresh">-</span>
+      </div><button onclick="manualRefresh()" id="manual-refresh-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg btn-hover text-sm flex items-center">
+       <svg class="h-4 w-4 inline-block mr-1" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+       </svg> Refresh Manual </button>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4"><!-- Search -->
+      <div class="md:col-span-2"><label for="search" class="block text-sm font-medium text-gray-700 mb-2">Pencarian Cepat</label> <input type="text" id="search" placeholder="Cari nama siswa..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+      </div><!-- Class Filter -->
+      <div><label for="class-filter" class="block text-sm font-medium text-gray-700 mb-2">Filter Kelas</label> <select id="class-filter" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"> <option value="">Semua Kelas</option> </select>
+      </div><!-- Items per page -->
+      <div><label for="items-per-page" class="block text-sm font-medium text-gray-700 mb-2">Tampilkan</label> <select id="items-per-page" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"> <option value="10">10 data</option> <option value="20">20 data</option> <option value="50">50 data</option> <option value="100">100 data</option> <option value="all">Semua data</option> </select>
+      </div>
+     </div><button id="reset-btn" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg btn-hover"> Reset Filter </button>
+    </div><!-- Loading State -->
+    <div id="loading" class="text-center py-8">
+     <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+     <p class="mt-2 text-gray-600">Memuat data...</p>
+    </div><!-- Data Table -->
+    <div id="table-container" class="bg-white rounded-xl shadow-sm overflow-hidden" style="display: none;">
+     <div class="overflow-x-auto">
+      <table class="w-full">
+       <thead class="bg-gray-100">
+        <tr>
+         <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">No</th>
+         <th class="px-6 py-4 text-left text-sm font-medium text-gray-700"><button onclick="toggleSort('waktu')" class="flex items-center hover:text-blue-600 transition-colors"> Waktu Submit <span id="sort-waktu-icon" class="ml-2 text-gray-400">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+            </svg></span> </button></th>
+         <th class="px-6 py-4 text-left text-sm font-medium text-gray-700"><button onclick="toggleSort('nama')" class="flex items-center hover:text-blue-600 transition-colors"> Nama Siswa <span id="sort-nama-icon" class="ml-2 text-gray-400">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+            </svg></span> </button></th>
+         <th class="px-6 py-4 text-left text-sm font-medium text-gray-700"><button onclick="toggleSort('kelas')" class="flex items-center hover:text-blue-600 transition-colors"> Kelas <span id="sort-kelas-icon" class="ml-2 text-gray-400">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+            </svg></span> </button></th>
+         <th class="px-6 py-4 text-left text-sm font-medium text-gray-700">Unduh</th>
+        </tr>
+       </thead>
+       <tbody id="table-body">
+       </tbody>
+      </table>
+     </div><!-- Pagination -->
+     <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+      <div class="text-sm text-gray-700">
+       Menampilkan <span id="showing-start">0</span> - <span id="showing-end">0</span> dari <span id="total-records">0</span> data
+      </div>
+      <div class="flex space-x-2" id="pagination">
+      </div>
+     </div>
+    </div><!-- Error State -->
+    <div id="error" class="text-center py-8 text-red-600" style="display: none;">
+     <p>Gagal memuat data. Silakan coba lagi nanti.</p>
+    </div>
+   </main><!-- Footer -->
+   <footer class="bg-gray-800 text-white py-6 mt-8">
+    <div class="container mx-auto px-6 text-center">
+     <p id="footer-text" class="text-sm">Copyright 2025 PAUD Kasih Ibu. All rights reserved.</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+        // Configuration
+        const defaultConfig = {
+            site_title: "E-Raport PAUD Kasih Ibu",
+            welcome_message: "🎓 Selamat Datang di Portal E-Raport 🎓",
+            welcome_description: "Akses mudah untuk melihat dan mengunduh raport digital siswa PAUD Kasih Ibu. Pantau perkembangan belajar anak dengan sistem yang modern dan efisien.",
+            credit_text: "Dibuat oleh Admin PAUD Kasih Ibu",
+            search_placeholder: "Cari nama siswa...",
+            footer_text: "Copyright 2025 PAUD Kasih Ibu. All rights reserved."
+        };
+
+        // Global variables
+        let allData = [];
+        let filteredData = [];
+        let currentPage = 1;
+        let itemsPerPage = 10;
+        let currentSortColumn = null;
+        let currentSortDirection = null; // 'asc' or 'desc'
+        let autoRefreshInterval = null;
+        let lastUpdateTime = null;
+
+        // CSV URL
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRESZCFjilj8MmRTUpValp9zyn04fpc-eyCHlpeRyizA1Sk9PyHkstMpaLJxLksqPtIDiGeA5qjojg-/pub?gid=0&single=true&output=csv';
+        
+        // Auto-refresh interval (30 seconds)
+        const REFRESH_INTERVAL = 30000;
+
+        // Parse CSV data
+        function parseCSV(text) {
+            const lines = text.split('\n');
+            const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+            const data = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                if (lines[i].trim()) {
+                    const values = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
+                    const row = {};
+                    headers.forEach((header, index) => {
+                        row[header] = values[index] || '';
+                    });
+                    data.push(row);
+                }
+            }
+            return data;
+        }
+
+        // Load data from Google Sheets
+        async function loadData(isAutoRefresh = false) {
+            try {
+                if (!isAutoRefresh) {
+                    document.getElementById('loading').style.display = 'block';
+                    document.getElementById('table-container').style.display = 'none';
+                    document.getElementById('error').style.display = 'none';
+                }
+
+                // Add timestamp to prevent caching
+                const timestamp = new Date().getTime();
+                const response = await fetch(`${CSV_URL}&_=${timestamp}`);
+                const csvText = await response.text();
+                allData = parseCSV(csvText);
+                
+                updateStatistics();
+                populateClassFilter();
+                applyFilters();
+                
+                // Update last refresh time
+                lastUpdateTime = new Date();
+                updateLastRefreshDisplay();
+                
+                if (!isAutoRefresh) {
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('table-container').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error loading data:', error);
+                if (!isAutoRefresh) {
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('error').style.display = 'block';
+                }
+            }
+        }
+
+        // Start auto-refresh
+        function startAutoRefresh() {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+            }
+            autoRefreshInterval = setInterval(() => {
+                loadData(true);
+            }, REFRESH_INTERVAL);
+        }
+
+        // Stop auto-refresh
+        function stopAutoRefresh() {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+            }
+        }
+
+        // Update last refresh display
+        function updateLastRefreshDisplay() {
+            if (!lastUpdateTime) return;
+            
+            const now = new Date();
+            const diffSeconds = Math.floor((now - lastUpdateTime) / 1000);
+            
+            let timeText = '';
+            if (diffSeconds < 60) {
+                timeText = `${diffSeconds} detik yang lalu`;
+            } else if (diffSeconds < 3600) {
+                const minutes = Math.floor(diffSeconds / 60);
+                timeText = `${minutes} menit yang lalu`;
+            } else {
+                const hours = Math.floor(diffSeconds / 3600);
+                timeText = `${hours} jam yang lalu`;
+            }
+            
+            const refreshDisplay = document.getElementById('last-refresh');
+            if (refreshDisplay) {
+                refreshDisplay.textContent = `Terakhir diperbarui: ${timeText}`;
+            }
+        }
+
+        // Manual refresh
+        function manualRefresh() {
+            const refreshBtn = document.getElementById('manual-refresh-btn');
+            refreshBtn.disabled = true;
+            refreshBtn.innerHTML = `
+                <svg class="animate-spin h-4 w-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                Memperbarui...
+            `;
+            
+            loadData(false).then(() => {
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = `
+                    <svg class="h-4 w-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    Refresh Manual
+                `;
+            });
+        }
+
+        // Populate class filter dropdown
+        function populateClassFilter() {
+            const classFilter = document.getElementById('class-filter');
+            const classes = [...new Set(allData.map(row => row['Kelas']).filter(Boolean))].sort();
+            
+            classFilter.innerHTML = '<option value="">Semua Kelas</option>';
+            classes.forEach(className => {
+                const option = document.createElement('option');
+                option.value = className;
+                option.textContent = className;
+                classFilter.appendChild(option);
+            });
+        }
+
+        // Format date and time
+        function formatDateTime(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return dateString;
+            
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            
+            return `${day}/${month}/${year} ${hours}:${minutes}`;
+        }
+
+        // Update statistics
+        function updateStatistics() {
+            document.getElementById('stat-raport').textContent = allData.length;
+        }
+
+        // Toggle sort
+        function toggleSort(column) {
+            // Reset all icons
+            document.getElementById('sort-waktu-icon').className = 'ml-2 text-gray-400';
+            document.getElementById('sort-nama-icon').className = 'ml-2 text-gray-400';
+            document.getElementById('sort-kelas-icon').className = 'ml-2 text-gray-400';
+            
+            // If clicking the same column, toggle direction
+            if (currentSortColumn === column) {
+                if (currentSortDirection === 'asc') {
+                    currentSortDirection = 'desc';
+                } else if (currentSortDirection === 'desc') {
+                    // Reset to no sort
+                    currentSortColumn = null;
+                    currentSortDirection = null;
+                    applyFilters();
+                    return;
+                } else {
+                    currentSortDirection = 'asc';
+                }
+            } else {
+                // New column, start with ascending
+                currentSortColumn = column;
+                currentSortDirection = 'asc';
+            }
+            
+            // Update icon
+            const iconId = `sort-${column}-icon`;
+            if (currentSortDirection === 'asc') {
+                document.getElementById(iconId).className = 'ml-2 text-blue-600';
+                document.getElementById(iconId).innerHTML = `
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+                    </svg>
+                `;
+            } else {
+                document.getElementById(iconId).className = 'ml-2 text-blue-600';
+                document.getElementById(iconId).innerHTML = `
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                `;
+            }
+            
+            applyFilters();
+        }
+
+        // Sort data
+        function sortData(data) {
+            if (!currentSortColumn || !currentSortDirection) {
+                return data;
+            }
+            
+            return [...data].sort((a, b) => {
+                let valueA, valueB;
+                
+                if (currentSortColumn === 'waktu') {
+                    valueA = new Date(a['Submitted at'] || 0).getTime();
+                    valueB = new Date(b['Submitted at'] || 0).getTime();
+                } else if (currentSortColumn === 'nama') {
+                    valueA = (a['Nama Siswa'] || a['Ketik nama siswa jika tidak ada'] || '').toLowerCase();
+                    valueB = (b['Nama Siswa'] || b['Ketik nama siswa jika tidak ada'] || '').toLowerCase();
+                } else if (currentSortColumn === 'kelas') {
+                    valueA = (a['Kelas'] || '').toLowerCase();
+                    valueB = (b['Kelas'] || '').toLowerCase();
+                }
+                
+                if (valueA < valueB) {
+                    return currentSortDirection === 'asc' ? -1 : 1;
+                }
+                if (valueA > valueB) {
+                    return currentSortDirection === 'asc' ? 1 : -1;
+                }
+                return 0;
+            });
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const selectedClass = document.getElementById('class-filter').value;
+
+            filteredData = allData.filter(row => {
+                const matchesSearch = row['Nama Siswa']?.toLowerCase().includes(searchTerm) || false;
+                const matchesClass = !selectedClass || row['Kelas'] === selectedClass;
+                return matchesSearch && matchesClass;
+            });
+
+            // Apply sorting
+            filteredData = sortData(filteredData);
+
+            currentPage = 1;
+            renderTable();
+            renderPagination();
+        }
+
+        // Render table
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            const itemsPerPageValue = document.getElementById('items-per-page').value;
+            
+            if (itemsPerPageValue === 'all') {
+                itemsPerPage = filteredData.length;
+            } else {
+                itemsPerPage = parseInt(itemsPerPageValue);
+            }
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = itemsPerPageValue === 'all' ? filteredData.length : startIndex + itemsPerPage;
+            const pageData = filteredData.slice(startIndex, endIndex);
+
+            tbody.innerHTML = '';
+
+            pageData.forEach((row, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row border-b border-gray-200';
+                
+                const submittedAt = formatDateTime(row['Submitted at']);
+                const namaSiswa = row['Nama Siswa'] || row['Ketik nama siswa jika tidak ada'] || '-';
+                
+                // Get download URL from "Unduh" column - try different possible column names
+                const downloadUrl = row['Unduh'] || row['unduh'] || row['UNDUH'] || row['Link Unduh'] || row['link unduh'] || '';
+                
+                tr.innerHTML = `
+                    <td class="px-6 py-4 text-sm text-gray-900">${startIndex + index + 1}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">${submittedAt}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">${namaSiswa}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">${row['Kelas'] || '-'}</td>
+                    <td class="px-6 py-4 text-sm">
+                        ${downloadUrl ? `
+                            <a href="${downloadUrl.trim()}" target="_blank" rel="noopener noreferrer" class="download-btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs btn-hover inline-flex items-center">
+                                <svg class="h-3 w-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Unduh
+                            </a>
+                        ` : `
+                            <span class="text-gray-400 text-xs">Tidak tersedia</span>
+                        `}
+                    </td>
+                `;
+                
+                tbody.appendChild(tr);
+            });
+
+            // Update showing info
+            document.getElementById('showing-start').textContent = filteredData.length > 0 ? startIndex + 1 : 0;
+            document.getElementById('showing-end').textContent = Math.min(endIndex, filteredData.length);
+            document.getElementById('total-records').textContent = filteredData.length;
+        }
+
+        // Render pagination
+        function renderPagination() {
+            const pagination = document.getElementById('pagination');
+            const itemsPerPageValue = document.getElementById('items-per-page').value;
+            
+            if (itemsPerPageValue === 'all') {
+                pagination.innerHTML = '';
+                return;
+            }
+
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            pagination.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            // Previous button
+            if (currentPage > 1) {
+                const prevBtn = document.createElement('button');
+                prevBtn.textContent = 'Sebelumnya';
+                prevBtn.className = 'px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded btn-hover';
+                prevBtn.onclick = () => {
+                    currentPage--;
+                    renderTable();
+                    renderPagination();
+                };
+                pagination.appendChild(prevBtn);
+            }
+
+            // Page numbers
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, currentPage + 2);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.textContent = i;
+                pageBtn.className = `px-3 py-1 text-sm rounded btn-hover ${
+                    i === currentPage 
+                        ? 'bg-blue-600 text-white' 
+                        : 'bg-gray-200 hover:bg-gray-300'
+                }`;
+                pageBtn.onclick = () => {
+                    currentPage = i;
+                    renderTable();
+                    renderPagination();
+                };
+                pagination.appendChild(pageBtn);
+            }
+
+            // Next button
+            if (currentPage < totalPages) {
+                const nextBtn = document.createElement('button');
+                nextBtn.textContent = 'Selanjutnya';
+                nextBtn.className = 'px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded btn-hover';
+                nextBtn.onclick = () => {
+                    currentPage++;
+                    renderTable();
+                    renderPagination();
+                };
+                pagination.appendChild(nextBtn);
+            }
+        }
+
+
+
+        // Event listeners
+        document.getElementById('search').addEventListener('input', applyFilters);
+        document.getElementById('class-filter').addEventListener('change', applyFilters);
+        document.getElementById('items-per-page').addEventListener('change', () => {
+            currentPage = 1;
+            renderTable();
+            renderPagination();
+        });
+
+        document.getElementById('reset-btn').addEventListener('click', () => {
+            document.getElementById('search').value = '';
+            document.getElementById('class-filter').value = '';
+            document.getElementById('items-per-page').value = '10';
+            
+            // Reset sorting
+            currentSortColumn = null;
+            currentSortDirection = null;
+            document.getElementById('sort-waktu-icon').className = 'ml-2 text-gray-400';
+            document.getElementById('sort-nama-icon').className = 'ml-2 text-gray-400';
+            document.getElementById('sort-kelas-icon').className = 'ml-2 text-gray-400';
+            document.getElementById('sort-waktu-icon').innerHTML = `
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                </svg>
+            `;
+            document.getElementById('sort-nama-icon').innerHTML = `
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                </svg>
+            `;
+            document.getElementById('sort-kelas-icon').innerHTML = `
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                </svg>
+            `;
+            
+            applyFilters();
+        });
+
+
+
+        // Element SDK Configuration
+        async function onConfigChange(config) {
+            const siteTitle = config.site_title || defaultConfig.site_title;
+            const welcomeMessage = config.welcome_message || defaultConfig.welcome_message;
+            const welcomeDescription = config.welcome_description || defaultConfig.welcome_description;
+            const creditText = config.credit_text || defaultConfig.credit_text;
+            const searchPlaceholder = config.search_placeholder || defaultConfig.search_placeholder;
+            const footerText = config.footer_text || defaultConfig.footer_text;
+
+            document.getElementById('site-title').textContent = siteTitle;
+            document.getElementById('welcome-message').textContent = welcomeMessage;
+            document.getElementById('welcome-description').textContent = welcomeDescription;
+            document.getElementById('credit-text').textContent = creditText;
+            document.getElementById('search').placeholder = searchPlaceholder;
+            document.getElementById('footer-text').textContent = footerText;
+        }
+
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            };
+        }
+
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ["site_title", config.site_title || defaultConfig.site_title],
+                ["welcome_message", config.welcome_message || defaultConfig.welcome_message],
+                ["welcome_description", config.welcome_description || defaultConfig.welcome_description],
+                ["credit_text", config.credit_text || defaultConfig.credit_text],
+                ["search_placeholder", config.search_placeholder || defaultConfig.search_placeholder],
+                ["footer_text", config.footer_text || defaultConfig.footer_text]
+            ]);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            startAutoRefresh();
+            
+            // Update last refresh time display every 10 seconds
+            setInterval(updateLastRefreshDisplay, 10000);
+            
+            if (window.elementSdk) {
+                window.elementSdk.init({
+                    defaultConfig,
+                    onConfigChange,
+                    mapToCapabilities,
+                    mapToEditPanelValues
+                });
+            }
+        });
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a31996fb5cd5c2f',t:'MTc2MzkxMDY4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

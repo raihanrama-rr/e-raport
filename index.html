@@ -1,189 +1,647 @@
 <!doctype html>
 <html lang="id">
-<head>
+ <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>E-Raport PAUD Kasih Ibu</title>
   <script src="/_sdk/element_sdk.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { box-sizing: border-box; }
-    .fade-in { animation: fadeIn 0.3s ease-in-out; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-    .popup-overlay { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); }
-    .popup-content { animation: popupSlide 0.3s ease-out; }
-    @keyframes popupSlide {
-      from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-      to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    }
-    .btn-hover { transition: all 0.2s ease; }
-    .btn-hover:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
-    .table-row:hover { background-color: #f8fafc; transition: background-color 0.2s ease; }
-  </style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .btn-hover {
+            transition: all 0.2s ease;
+        }
+        
+        .btn-hover:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .table-row:hover {
+            background-color: #f8fafc;
+            transition: background-color 0.2s ease;
+        }
+        
+        .spin-animation {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
-</head>
-
-<body class="bg-gray-50 min-h-full">
-  <div class="min-h-full flex flex-col">
-
-    <!-- Header -->
-    <header class="bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg">
-      <div class="container mx-auto px-6 py-6">
-        <div class="flex flex-col md:flex-row items-center justify-between">
-          <div class="flex items-center mb-3 md:mb-0">
-            <img src="https://iili.io/fJHqQnt.png" alt="Logo PAUD Kasih Ibu" class="h-12 w-12 rounded-full bg-white p-2 mr-3 shadow-md" onerror="this.style.display='none';">
-            <div>
-              <h1 id="site-title" class="text-2xl font-bold">E-Raport PAUD Kasih Ibu</h1>
-              <p class="text-blue-100 text-sm">Sistem Informasi Raport Digital</p>
-            </div>
-          </div>
-          <div class="text-center md:text-right">
-            <p id="welcome-message" class="text-base md:text-lg font-medium text-blue-50">🎓 Selamat Datang di Portal E-Raport</p>
-            <p class="text-sm md:text-base text-blue-100 mt-1"><span id="credit-text">Dibuat oleh Admin PAUD Kasih Ibu</span></p>
-          </div>
-        </div>
+ </head>
+ <body class="bg-gray-50 min-h-full">
+  <div class="min-h-full flex flex-col w-full"><!-- Header -->
+   <header class="bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg w-full">
+    <div class="container mx-auto px-6 py-6">
+     <div class="flex flex-col md:flex-row items-center justify-between"><!-- Logo and Title -->
+      <div class="flex items-center mb-3 md:mb-0"><img src="https://iili.io/fJHqQnt.png" alt="Logo PAUD Kasih Ibu" class="h-12 w-12 rounded-full bg-white p-2 mr-3 shadow-md" onerror="this.style.display='none';">
+       <div>
+        <h1 id="site-title" class="text-2xl font-bold">E-Raport PAUD Kasih Ibu</h1>
+        <p class="text-blue-100 text-sm">Sistem Informasi Raport Digital</p>
+       </div>
+      </div><!-- Welcome Message -->
+      <div class="text-center md:text-right">
+       <p class="text-base md:text-lg font-medium text-blue-50">🎓 Selamat Datang di Portal E-Raport</p>
       </div>
-    </header>
-
-    <!-- Top Navigation -->
-    <div class="bg-white shadow-sm">
-      <div class="container mx-auto px-6 py-4 flex justify-end">
-        <a href="https://tally.so/r/LZZKMy" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg btn-hover font-medium text-base md:text-lg">Input E-Raport</a>
-      </div>
+     </div>
     </div>
-
-    <!-- Main Content -->
-    <main class="flex-1 container mx-auto px-6 py-8">
-      <!-- Petunjuk -->
-      <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-6 mb-8 shadow-sm">
-        <h3 class="text-xl md:text-2xl font-semibold text-blue-900 mb-3">📋 Petunjuk Penggunaan</h3>
-        <p class="text-blue-800 text-base md:text-lg mb-3">Selamat datang di Portal E-Raport PAUD Kasih Ibu! Website ini memudahkan Anda untuk mengelola dan mengakses raport digital siswa.</p>
-        <p class="text-blue-800 text-base md:text-lg mb-1">✏️ Untuk <strong>membuat raport baru</strong>, klik tombol <strong>"Input E-Raport"</strong>.</p>
-        <p class="text-blue-800 text-base md:text-lg">📥 Untuk <strong>mengunduh raport</strong>, cari nama siswa di tabel, lalu klik tombol <strong>"Unduh"</strong>.</p>
+   </header><!-- Top Navigation -->
+   <div class="bg-white shadow-sm w-full">
+    <div class="container mx-auto px-6 py-4">
+     <div class="flex flex-col md:flex-row justify-between items-center gap-4"><!-- Last Update Info -->
+      <div class="text-sm text-gray-600"><span class="font-medium">Terakhir diperbarui:</span> <span id="last-update" class="ml-2">-</span>
       </div>
-
-      <!-- Statistik -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
-          <p class="text-base md:text-lg text-gray-600 mb-1">Jumlah Input Raport</p>
-          <h3 id="stat-raport" class="text-4xl md:text-5xl font-bold text-gray-900">0</h3>
-        </div>
-        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
-          <p class="text-base md:text-lg text-gray-600 mb-1">Jumlah Rombel</p>
-          <h3 class="text-4xl md:text-5xl font-bold text-gray-900">2</h3>
-        </div>
-        <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-purple-500">
-          <p class="text-base md:text-lg text-gray-600 mb-1">Jumlah Guru</p>
-          <h3 class="text-4xl md:text-5xl font-bold text-gray-900">2</h3>
-        </div>
+      <div class="flex gap-3"><!-- Refresh Button --> <button id="refresh-btn" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg btn-hover font-medium text-base md:text-lg flex items-center gap-2">
+        <svg id="refresh-icon" class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+        </svg><span id="refresh-text">Refresh Data</span> </button> <!-- Input E-Raport Button --> <a href="https://tally.so/r/LZZKMy" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg btn-hover font-medium text-base md:text-lg"> Input E-Raport </a>
       </div>
-
-      <!-- Filter -->
-      <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
-        <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
-          <div class="flex items-center space-x-3">
-            <div class="h-3 w-3 bg-green-500 rounded-full animate-pulse"></div>
-            <span class="text-base md:text-lg text-gray-600 font-medium">Mode Realtime Aktif</span>
-            <span class="text-sm md:text-base text-gray-500" id="last-refresh">-</span>
-          </div>
-          <button onclick="manualRefresh()" id="manual-refresh-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg btn-hover text-base md:text-lg flex items-center">
-            <svg class="h-4 w-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>Refresh Manual
-          </button>
-        </div>
+     </div>
+    </div>
+   </div><!-- Main Content -->
+   <main class="flex-1 container mx-auto px-6 py-8 w-full"><!-- Dashboard Statistics -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500">
+      <div class="flex items-center justify-between">
+       <div>
+        <p class="text-gray-600 text-sm font-medium">Total Raport</p>
+        <p id="total-count" class="text-3xl font-bold text-blue-600 mt-1">0</p>
+       </div>
+       <div class="bg-blue-100 rounded-full p-3">
+        <svg class="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
+       </div>
       </div>
-
-      <!-- Tabel Data -->
-      <div id="loading" class="text-center py-8">
-        <div class="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
-        <p class="mt-3 text-gray-600 text-base md:text-lg">Memuat data...</p>
+     </div>
+     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-green-500">
+      <div class="flex items-center justify-between">
+       <div>
+        <p class="text-gray-600 text-sm font-medium">Total Kelas</p>
+        <p class="text-3xl font-bold text-green-600 mt-1">2</p>
+       </div>
+       <div class="bg-green-100 rounded-full p-3">
+        <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+        </svg>
+       </div>
       </div>
-
-      <div id="table-container" class="bg-white rounded-xl shadow-sm overflow-hidden" style="display:none;">
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead class="bg-gray-100">
-              <tr>
-                <th class="px-6 py-4 text-left">No</th>
-                <th class="px-6 py-4 text-left">Waktu Submit</th>
-                <th class="px-6 py-4 text-left">Nama Siswa</th>
-                <th class="px-6 py-4 text-left">Kelas</th>
-                <th class="px-6 py-4 text-left">Unduh</th>
-              </tr>
-            </thead>
-            <tbody id="table-body"></tbody>
-          </table>
-        </div>
+     </div>
+     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-purple-500">
+      <div class="flex items-center justify-between">
+       <div>
+        <p class="text-gray-600 text-sm font-medium">Total Guru</p>
+        <p class="text-3xl font-bold text-purple-600 mt-1">2</p>
+       </div>
+       <div class="bg-purple-100 rounded-full p-3">
+        <svg class="h-8 w-8 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+        </svg>
+       </div>
       </div>
-    </main>
+     </div>
+    </div><!-- Info Box -->
+    <div class="bg-blue-50 border-l-4 border-blue-500 rounded-lg p-6 mb-8 shadow-sm">
+     <div class="flex items-start">
+      <div class="flex-shrink-0">
+       <svg class="h-6 w-6 text-blue-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+       </svg>
+      </div>
+      <div class="ml-4 flex-1">
+       <h3 class="text-xl md:text-2xl font-semibold text-blue-900 mb-3">📋 Petunjuk Penggunaan</h3>
+       <ul class="list-disc list-inside text-blue-800 text-base md:text-lg space-y-2">
+        <li><strong>Cari Siswa:</strong> Ketik nama siswa di kolom pencarian</li>
+        <li><strong>Filter Kelas:</strong> Pilih kelas tertentu dari dropdown filter</li>
+        <li><strong>Urutkan Data:</strong> Klik header tabel untuk mengurutkan (↑↓)</li>
+        <li><strong>Unduh Raport:</strong> Klik tombol "Unduh" untuk membuka file</li>
+       </ul>
+      </div>
+     </div>
+    </div><!-- Search and Filter -->
+    <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-4"><!-- Class Filter -->
+      <div><label for="class-filter" class="block text-sm font-medium text-gray-700 mb-2"> 📚 Filter Kelas </label> <select id="class-filter" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"> <option value="">Semua Kelas</option> </select>
+      </div><!-- Search Box -->
+      <div><label for="search" class="block text-sm font-medium text-gray-700 mb-2"> 🔍 Cari Nama Siswa </label> <input type="text" id="search" placeholder="Ketik nama siswa..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base">
+      </div><!-- Items Per Page -->
+      <div><label for="items-per-page" class="block text-sm font-medium text-gray-700 mb-2"> 📊 Tampilkan Data </label> <select id="items-per-page" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"> <option value="20">20 data</option> <option value="30">30 data</option> <option value="50">50 data</option> </select>
+      </div>
+     </div>
+    </div><!-- Loading State -->
+    <div id="loading" class="text-center py-12">
+     <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+     <p class="text-gray-600 text-lg">Memuat data raport...</p>
+    </div><!-- Data Table (akan muncul setelah dikonfigurasi) -->
+    <div id="table-container" class="bg-white rounded-xl shadow-sm overflow-hidden" style="display: none;">
+     <div class="overflow-x-auto">
+      <table class="w-full">
+       <thead class="bg-gray-100">
+        <tr id="table-header"><!-- Header akan diisi dinamis -->
+        </tr>
+       </thead>
+       <tbody id="table-body"><!-- Data akan diisi dinamis -->
+       </tbody>
+      </table>
+     </div>
+    </div><!-- Error State -->
+    <div id="error" class="text-center py-8 text-red-600" style="display: none;">
+     <p class="text-base md:text-lg">Gagal memuat data. Silakan periksa URL dan struktur Google Sheets Anda.</p>
+    </div>
+   </main><!-- Footer -->
+   <footer class="bg-gray-800 text-white py-6 mt-8 w-full">
+    <div class="container mx-auto px-6 text-center">
+     <p id="footer-text" class="text-base md:text-lg">Copyright 2025 PAUD Kasih Ibu. All rights reserved.</p>
+    </div>
+   </footer>
   </div>
-
   <script>
-    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRESZCFjilj8MmRTUpValp9zyn04fpc-eyCHlpeRyizA1Sk9PyHkstMpaLJxLksqPtIDiGeA5qjojg-/pub?gid=0&single=true&output=csv';
-    let allData = [], filteredData = [];
+        // Configuration
+        const defaultConfig = {
+            site_title: "E-Raport PAUD Kasih Ibu",
+            search_placeholder: "Cari nama siswa...",
+            footer_text: "Copyright 2025 PAUD Kasih Ibu. All rights reserved."
+        };
 
-    function parseCSV(text) {
-      const lines = text.split(/\r?\n(?=(?:[^"]*"[^"]*")*[^"]*$)/);
-      const headers = lines[0].split(',').map(h => h.trim().replace(/(^"|"$)/g, ''));
-      const data = [];
-      for (let i = 1; i < lines.length; i++) {
-        if (lines[i].trim()) {
-          const values = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g)?.map(v => v.replace(/^"|"$/g, '').trim()) || [];
-          const row = {};
-          headers.forEach((header, index) => row[header] = values[index] || '');
-          data.push(row);
+        // CSV URL - Google Sheets E-Raport PAUD Kasih Ibu
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRESZCFjilj8MmRTUpValp9zyn04fpc-eyCHlpeRyizA1Sk9PyHkstMpaLJxLksqPtIDiGeA5qjojg-/pub?gid=0&single=true&output=csv';
+
+        // Global variables
+        let allData = [];
+        let headers = [];
+        let autoRefreshInterval = null;
+        const AUTO_REFRESH_INTERVAL = 30000; // 30 seconds
+
+        // Parse single CSV line
+        function parseCSVLine(line) {
+            const values = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                const nextChar = line[i + 1];
+                
+                if (char === '"') {
+                    if (inQuotes && nextChar === '"') {
+                        current += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    values.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            values.push(current.trim());
+            
+            return values;
         }
-      }
-      return data;
-    }
 
-    async function loadData() {
-      document.getElementById('loading').style.display = 'block';
-      const response = await fetch(CSV_URL);
-      const csvText = await response.text();
-      allData = parseCSV(csvText);
-      filteredData = allData;
-      renderTable();
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('table-container').style.display = 'block';
-    }
+        // Parse CSV data - EXTRACT SPECIFIC COLUMNS
+        function parseCSV(text) {
+            const lines = text.trim().split('\n');
+            if (lines.length < 1) return { headers: [], data: [] };
+            
+            // Parse header
+            const headerLine = lines[0];
+            const allHeaders = parseCSVLine(headerLine);
+            console.log('All Headers detected:', allHeaders);
+            
+            // Find column indices for the columns we need
+            const submittedAtIndex = allHeaders.findIndex(h => h.trim() === 'Submitted at');
+            const namaSiswaIndex = allHeaders.findIndex(h => h.trim() === 'Nama Siswa');
+            const kelasIndex = allHeaders.findIndex(h => h.trim() === 'Kelas');
+            const unduhIndex = allHeaders.findIndex(h => h.trim() === 'Merged Doc URL - E-Raport V2');
+            
+            console.log('Column indices:', {
+                submittedAt: submittedAtIndex,
+                namaSiswa: namaSiswaIndex,
+                kelas: kelasIndex,
+                unduh: unduhIndex
+            });
+            
+            // Define our custom headers
+            const customHeaders = ['Waktu Submit', 'Nama Siswa', 'Kelas', 'Unduh'];
+            
+            // Parse data rows
+            const data = [];
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                const values = parseCSVLine(line);
+                
+                // Extract only the columns we need
+                const namaSiswa = values[namaSiswaIndex] || '';
+                const kelas = values[kelasIndex] || '';
+                
+                // Skip rows with invalid or incomplete data
+                if (namaSiswa.trim() === '' || kelas.trim() === '' || namaSiswa.length < 3 || kelas.trim() === '-') {
+                    console.log('Row skipped (invalid data):', { namaSiswa, kelas });
+                    continue;
+                }
+                
+                const row = {
+                    'Waktu Submit': values[submittedAtIndex] || '',
+                    'Nama Siswa': namaSiswa,
+                    'Kelas': kelas,
+                    'Unduh': values[unduhIndex] || ''
+                };
+                
+                data.push(row);
+            }
+            
+            console.log('Total rows parsed:', data.length);
+            console.log('Sample data:', data.slice(0, 3));
+            
+            return { headers: customHeaders, data: data };
+        }
 
-    function formatDateTime(dateString) {
-      const date = new Date(dateString);
-      if (isNaN(date)) return dateString;
-      const d = String(date.getDate()).padStart(2, '0');
-      const m = String(date.getMonth() + 1).padStart(2, '0');
-      const y = date.getFullYear();
-      const h = String(date.getHours()).padStart(2, '0');
-      const min = String(date.getMinutes()).padStart(2, '0');
-      return `${d}/${m}/${y} ${h}:${min}`;
-    }
+        // Format date and time
+        function formatDateTime(dateString) {
+            if (!dateString) return '-';
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return dateString;
+            
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            
+            return `${day}/${month}/${year} ${hours}:${minutes}`;
+        }
 
-    function renderTable() {
-      const tbody = document.getElementById('table-body');
-      tbody.innerHTML = '';
-      filteredData.forEach((row, index) => {
-        const tr = document.createElement('tr');
-        tr.className = 'border-b border-gray-200';
-        const submittedAt = formatDateTime(row['Submitted at']);
-        const nama = row['Nama Siswa'] || '-';
-        const kelas = row['Kelas'] || '-';
-        const url = row['Merged Doc URL - E-Raport V2']?.trim() || '';
+        // Update last refresh time
+        function updateLastRefreshTime() {
+            const now = new Date();
+            const timeString = formatDateTime(now.toISOString());
+            document.getElementById('last-update').textContent = timeString;
+        }
 
-        tr.innerHTML = `
-          <td class="px-6 py-4">${index + 1}</td>
-          <td class="px-6 py-4">${submittedAt}</td>
-          <td class="px-6 py-4">${nama}</td>
-          <td class="px-6 py-4">${kelas}</td>
-          <td class="px-6 py-4">
-            ${url ? `<a href="${url}" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Unduh</a>` : '<span class="text-gray-400">-</span>'}
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
+        // Load data from Google Sheets
+        async function loadData(isManualRefresh = false) {
+            if (!CSV_URL) {
+                console.log('CSV_URL not configured yet');
+                return;
+            }
+            
+            try {
+                // Show loading state
+                if (!isManualRefresh) {
+                    document.getElementById('loading').style.display = 'block';
+                    document.getElementById('table-container').style.display = 'none';
+                }
+                document.getElementById('error').style.display = 'none';
 
-    loadData();
-  </script>
-</body>
+                const timestamp = new Date().getTime();
+                const response = await fetch(`${CSV_URL}&_=${timestamp}`);
+                const csvText = await response.text();
+                
+                const result = parseCSV(csvText);
+                headers = result.headers;
+                allData = result.data;
+                filteredData = [...allData];
+                
+                console.log('Data loaded successfully');
+                console.log('Headers:', headers);
+                console.log('Row count:', allData.length);
+                
+                populateClassFilter();
+                renderTable();
+                updateDashboard();
+                updateLastRefreshTime();
+                
+                // Add event listeners only on first load
+                if (!isManualRefresh) {
+                    document.getElementById('search').addEventListener('input', filterData);
+                    document.getElementById('class-filter').addEventListener('change', filterData);
+                    document.getElementById('items-per-page').addEventListener('change', updateItemsPerPage);
+                }
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('table-container').style.display = 'block';
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+            }
+        }
+
+        // Manual refresh function
+        async function manualRefresh() {
+            const refreshBtn = document.getElementById('refresh-btn');
+            const refreshIcon = document.getElementById('refresh-icon');
+            const refreshText = document.getElementById('refresh-text');
+            
+            // Disable button and show loading
+            refreshBtn.disabled = true;
+            refreshBtn.classList.add('opacity-75', 'cursor-not-allowed');
+            refreshIcon.classList.add('spin-animation');
+            refreshText.textContent = 'Memuat...';
+            
+            await loadData(true);
+            
+            // Re-enable button
+            setTimeout(() => {
+                refreshBtn.disabled = false;
+                refreshBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                refreshIcon.classList.remove('spin-animation');
+                refreshText.textContent = 'Refresh Data';
+            }, 500);
+        }
+
+        // Start auto refresh
+        function startAutoRefresh() {
+            // Clear existing interval if any
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+            }
+            
+            // Set new interval
+            autoRefreshInterval = setInterval(() => {
+                console.log('Auto-refreshing data...');
+                loadData(true);
+            }, AUTO_REFRESH_INTERVAL);
+        }
+
+        // Stop auto refresh
+        function stopAutoRefresh() {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+            }
+        }
+
+        // Global sort state
+        let sortColumn = null;
+        let sortDirection = 'asc';
+        let filteredData = [];
+        let itemsPerPage = 20;
+
+        // Filter and search data
+        function filterData() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const classFilter = document.getElementById('class-filter').value;
+
+            filteredData = allData.filter(row => {
+                const matchesSearch = row['Nama Siswa'].toLowerCase().includes(searchTerm);
+                const matchesClass = !classFilter || row['Kelas'] === classFilter;
+                return matchesSearch && matchesClass;
+            });
+
+            // Apply current sort if exists
+            if (sortColumn) {
+                sortData(sortColumn, false);
+            }
+
+            renderTable();
+            updateDashboard();
+        }
+
+        // Update items per page
+        function updateItemsPerPage() {
+            itemsPerPage = parseInt(document.getElementById('items-per-page').value);
+            renderTable();
+        }
+
+        // Sort data
+        function sortData(column, toggleDirection = true) {
+            if (toggleDirection) {
+                if (sortColumn === column) {
+                    sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+                } else {
+                    sortColumn = column;
+                    sortDirection = 'asc';
+                }
+            }
+
+            filteredData.sort((a, b) => {
+                let valA = a[column] || '';
+                let valB = b[column] || '';
+
+                // Handle date sorting for Waktu Submit
+                if (column === 'Waktu Submit') {
+                    valA = new Date(valA).getTime() || 0;
+                    valB = new Date(valB).getTime() || 0;
+                } else {
+                    valA = valA.toString().toLowerCase();
+                    valB = valB.toString().toLowerCase();
+                }
+
+                if (sortDirection === 'asc') {
+                    return valA > valB ? 1 : valA < valB ? -1 : 0;
+                } else {
+                    return valA < valB ? 1 : valA > valB ? -1 : 0;
+                }
+            });
+
+            renderTable();
+        }
+
+        // Update dashboard statistics
+        function updateDashboard() {
+            document.getElementById('total-count').textContent = allData.length;
+        }
+
+        // Populate class filter dropdown
+        function populateClassFilter() {
+            const classFilter = document.getElementById('class-filter');
+            const uniqueClasses = [...new Set(allData.map(row => row['Kelas']))].filter(k => k).sort();
+            
+            classFilter.innerHTML = '<option value="">Semua Kelas</option>';
+            uniqueClasses.forEach(kelas => {
+                const option = document.createElement('option');
+                option.value = kelas;
+                option.textContent = kelas;
+                classFilter.appendChild(option);
+            });
+        }
+
+        // Render table
+        function renderTable() {
+            // Render header
+            const thead = document.getElementById('table-header');
+            thead.innerHTML = '';
+            
+            // Add number column
+            const thNo = document.createElement('th');
+            thNo.className = 'px-6 py-4 text-left text-base font-medium text-gray-700';
+            thNo.textContent = 'No';
+            thead.appendChild(thNo);
+            
+            // Add data columns with sort functionality
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.className = 'px-6 py-4 text-left text-base font-medium text-gray-700 cursor-pointer hover:bg-gray-200 transition-colors';
+                
+                const headerContent = document.createElement('div');
+                headerContent.className = 'flex items-center gap-2';
+                
+                const headerText = document.createElement('span');
+                headerText.textContent = header;
+                headerContent.appendChild(headerText);
+                
+                // Add sort icon
+                const sortIcon = document.createElement('span');
+                sortIcon.className = 'text-gray-400';
+                if (sortColumn === header) {
+                    sortIcon.textContent = sortDirection === 'asc' ? '↑' : '↓';
+                    sortIcon.className = 'text-blue-600 font-bold';
+                } else {
+                    sortIcon.textContent = '↕';
+                }
+                headerContent.appendChild(sortIcon);
+                
+                th.appendChild(headerContent);
+                th.onclick = () => sortData(header);
+                thead.appendChild(th);
+            });
+            
+            // Render body
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+            
+            const dataToRender = filteredData.length > 0 || document.getElementById('search').value || document.getElementById('class-filter').value ? filteredData : allData;
+            
+            if (dataToRender.length === 0) {
+                const tr = document.createElement('tr');
+                const td = document.createElement('td');
+                td.colSpan = headers.length + 1;
+                td.className = 'px-6 py-8 text-center text-gray-500 text-lg';
+                td.textContent = '📭 Tidak ada data yang sesuai dengan pencarian';
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+                return;
+            }
+            
+            // Apply pagination limit
+            const limitedData = dataToRender.slice(0, itemsPerPage);
+            
+            limitedData.forEach((row, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row border-b border-gray-200';
+                
+                // Number column
+                const tdNo = document.createElement('td');
+                tdNo.className = 'px-6 py-4 text-base text-gray-900';
+                tdNo.textContent = index + 1;
+                tr.appendChild(tdNo);
+                
+                // Data columns
+                headers.forEach(header => {
+                    const td = document.createElement('td');
+                    td.className = 'px-6 py-4 text-base text-gray-900';
+                    
+                    let value = row[header] || '-';
+                    
+                    // Format date for "Waktu Submit" column
+                    if (header === 'Waktu Submit' && value !== '-') {
+                        value = formatDateTime(value);
+                        td.textContent = value;
+                    }
+                    // Check if it's the "Unduh" column with URL
+                    else if (header === 'Unduh' && (value.startsWith('http://') || value.startsWith('https://'))) {
+                        td.innerHTML = `
+                            <a href="${value}" target="_blank" rel="noopener noreferrer" 
+                               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg btn-hover inline-flex items-center text-sm">
+                                <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Unduh
+                            </a>
+                        `;
+                    } else {
+                        td.textContent = value;
+                    }
+                    
+                    tr.appendChild(td);
+                });
+                
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Element SDK Configuration
+        async function onConfigChange(config) {
+            const siteTitle = config.site_title || defaultConfig.site_title;
+            const searchPlaceholder = config.search_placeholder || defaultConfig.search_placeholder;
+            const footerText = config.footer_text || defaultConfig.footer_text;
+
+            document.getElementById('site-title').textContent = siteTitle;
+            const searchInput = document.getElementById('search');
+            if (searchInput) {
+                searchInput.placeholder = searchPlaceholder;
+            }
+            document.getElementById('footer-text').textContent = footerText;
+        }
+
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            };
+        }
+
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ["site_title", config.site_title || defaultConfig.site_title],
+                ["search_placeholder", config.search_placeholder || defaultConfig.search_placeholder],
+                ["footer_text", config.footer_text || defaultConfig.footer_text]
+            ]);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.elementSdk) {
+                window.elementSdk.init({
+                    defaultConfig,
+                    onConfigChange,
+                    mapToCapabilities,
+                    mapToEditPanelValues
+                });
+            }
+            
+            // Add refresh button event listener
+            const refreshBtn = document.getElementById('refresh-btn');
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', manualRefresh);
+            }
+            
+            // Only load data if CSV_URL is configured
+            if (CSV_URL) {
+                loadData();
+                // Start auto-refresh after initial load
+                startAutoRefresh();
+            }
+        });
+
+        // Stop auto-refresh when page is hidden (optional: save resources)
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopAutoRefresh();
+            } else {
+                startAutoRefresh();
+            }
+        });
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a453a86e7cf3e65',t:'MTc2NDExNjUxNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

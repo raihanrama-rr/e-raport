@@ -213,13 +213,55 @@
             return values;
         }
 
-        // Parse CSV data - EXTRACT SPECIFIC COLUMNS
+        // Parse CSV data - EXTRACT SPECIFIC COLUMNS (with multiline cell support)
         function parseCSV(text) {
-            const lines = text.trim().split('\n');
-            if (lines.length < 1) return { headers: [], data: [] };
+            // Split into proper CSV rows, handling multiline cells
+            const rows = [];
+            let currentRow = '';
+            let insideQuotes = false;
+            let quoteCount = 0;
+            
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const nextChar = text[i + 1];
+                
+                currentRow += char;
+                
+                // Track quotes
+                if (char === '"') {
+                    // Check if it's an escaped quote
+                    if (nextChar === '"') {
+                        currentRow += nextChar;
+                        i++; // Skip next quote
+                    } else {
+                        quoteCount++;
+                        insideQuotes = !insideQuotes;
+                    }
+                }
+                
+                // Only treat \n as row separator if we're not inside quotes
+                if (char === '\n' && !insideQuotes) {
+                    const trimmedRow = currentRow.trim();
+                    if (trimmedRow) {
+                        rows.push(trimmedRow);
+                    }
+                    currentRow = '';
+                    quoteCount = 0;
+                }
+            }
+            
+            // Add last row if exists
+            const trimmedRow = currentRow.trim();
+            if (trimmedRow) {
+                rows.push(trimmedRow);
+            }
+            
+            console.log('Total CSV rows detected:', rows.length);
+            
+            if (rows.length < 1) return { headers: [], data: [] };
             
             // Parse header
-            const headerLine = lines[0];
+            const headerLine = rows[0];
             const allHeaders = parseCSVLine(headerLine);
             console.log('All Headers detected:', allHeaders);
             
@@ -241,11 +283,11 @@
             
             // Parse data rows
             const data = [];
-            for (let i = 1; i < lines.length; i++) {
-                const line = lines[i].trim();
-                if (!line) continue;
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i].trim();
+                if (!row) continue;
                 
-                const values = parseCSVLine(line);
+                const values = parseCSVLine(row);
                 
                 // Extract only the columns we need
                 const namaSiswa = values[namaSiswaIndex] || '';
@@ -257,14 +299,14 @@
                     continue;
                 }
                 
-                const row = {
+                const rowData = {
                     'Waktu Submit': values[submittedAtIndex] || '',
                     'Nama Siswa': namaSiswa,
                     'Kelas': kelas,
                     'Unduh': values[unduhIndex] || ''
                 };
                 
-                data.push(row);
+                data.push(rowData);
             }
             
             console.log('Total rows parsed:', data.length);
@@ -643,5 +685,5 @@
             }
         });
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a453a86e7cf3e65',t:'MTc2NDExNjUxNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a4678ef31ddaecd',t:'MTc2NDEyOTU1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
